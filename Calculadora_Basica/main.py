@@ -62,16 +62,16 @@ def main():
             print(f'Ingrese solamente numeros, error:\n{err}')
             break
 
-        if menu == '1':
+        if menu == 1:
             opcion = 'suma'
             res = suma(a,b)
-        elif menu == '2':
+        elif menu == 2:
             opcion = 'resta'
             res = resta(a,b)
-        elif menu == '3':
+        elif menu == 3:
             opcion = 'multiplicacion'
             res = multiplicacion(a,b)
-        elif menu == '4':
+        elif menu == 4:
             opcion = 'division'
             res = division(a,b)
 
