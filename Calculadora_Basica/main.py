@@ -47,11 +47,20 @@ def main():
     while continuar:
         os.system('clear')
         print(line + '   MENU   ' + line)
-        menu = input('\n\nSeleccione del menu\n1. Suma\n2. Resta\n3.Multiplicacion\n4.Division\n\n>>')
+        try:
+            menu = input('\n\nSeleccione del menu\n1. Suma\n2. Resta\n3.Multiplicacion\n4.Division\n\n>>')
+            menu = int(menu)
+        except Exception as err: 
+            print(f'Ingrese solamente numeros, \nerror: {err}')
+            break
         print(line)
 
-        a = int(input('\nIngrese el primer numero\n>>'))
-        b = int(input('\nIngrese el segundo numero\n>>'))
+        try:
+            a = int(input('\nIngrese el primer numero\n>>'))
+            b = int(input('\nIngrese el segundo numero\n>>'))
+        except Exception as err:
+            print(f'Ingrese solamente numeros, error:\n{err}')
+            break
 
         if menu == '1':
             opcion = 'suma'
