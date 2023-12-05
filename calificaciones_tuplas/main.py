@@ -3,109 +3,66 @@ from pathlib import Path
 import csv
 import pandas as pd
 
-def menu(archivo):
+registro_notas = []
+
+def menu():
     while True:
         #Validar si existe lista y si no, crearla
         print('\n'+'*' * 45 + "  MENU " + '*' * 45)
-        opcion = input('\nSeleccione del menu: \n1.Agregar Tarea\n2.Completar tarea\n3.Eliminar Tarea\n4.Visualizar Tareas\n5.Salir\n>>')
+        opcion = input('\nSeleccione del menu: \n1.Mostrar todo\n2.Agregar nota\n3.Eliminar Nota\n4.Salir\n>>')
         
         try:
             opcion = int(opcion)
-            if opcion < 1 or opcion > 5:
+            if opcion < 1 or opcion > 4:
                 raise
         except Exception as e:
             os.system('clear')
-            print('Ingrese un valor correcto (1,2,3,4 o 5)')
+            print('Ingrese un valor correcto (1,2,3,4)')
             break
 
         if opcion == 1:
             os.system('clear')
-            agregar_tarea(archivo)
+            mostrar_todo(registro_notas)
         if opcion == 2:
             os.system('clear')
-            marcar_completada(archivo)
+            agregar_nota(registro_notas)
         if opcion == 3:
             os.system('clear')
-            eliminar_tarea(archivo)
+            eliminar_nota(registro_notas)
         if opcion == 4:
-            os.system('clear')
-            visualizar_lista(archivo)
-        if opcion == 5:
             break
-    
 
-def validar_lista():
-    lista = 'lista.csv'
-    file = 'To-do_list/lista/lista.csv'
-
-    if os.path.exists(file):
-        print(f"El archivo {lista} existe.")
-        return file
-    else:
-        print(f"El archivo {lista} no existe.")
-        print('Creando lista')
-        with open(file, 'w', newline='') as archivo:
-            encabezados = ["Tarea", "Status"]
-            escritor = csv.writer(archivo)
-            escritor.writerow(encabezados)  
-        return file
-
-def agregar_tarea(archivo):
+def agregar_nota(registro_notas):
     print('\n'+'*' * 40 + " Agregar Tarea " + '*' * 40)
-    nombre_tarea = input('\nIngrese el nombre de su tarea >> ')
-    with open(archivo, 'a', newline='') as csvfile:
-        fieldnames = ["Tarea", "Status"]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writerow({'Tarea': f'{nombre_tarea}', 'Status': 'Abierto'})
-    
-    os.system('clear')
-    visualizar_lista(archivo)
+    nombre = input('Ingrese nombre del alumno: ')
+    calificacion = input('Ingrese calificacion del alumno: ')
+    new_valores = (nombre, calificacion)
+    registro_notas.append(new_valores)
+    mostrar_todo(registro_notas)
 
-def marcar_completada(archivo):
-    print('\n'+'*' * 40 + " Completar Tarea " + '*' * 40)
+def mostrar_todo(registro_notas):
+    #print('\n'+'*' * 40 + " Completar Tarea " + '*' * 40)
     print('\nMostrando tus tareas...')
-    visualizar_lista(archivo)
-
-    tarea = input('\nIngrese el nombre de su tarea a completar >> ')
-    print('\n')
     
-    csv = pd.read_csv(archivo)
-    try: 
-        csv.loc[csv['Tarea'] == tarea, 'Status'] = 'Cerrado'
-        csv.to_csv(archivo, index=False)
-        os.system('clear')
-        visualizar_lista(archivo)
-    except Exception as e:
-        print(e)
+    for nombre, calificacion in registro_notas:
+        print(f'nombre:{nombre}\ncalificacion:{calificacion}')
 
 
-def eliminar_tarea(archivo):
+
+def eliminar_nota(registro_notas):
     print('\n'+'*' * 40 + " Eliminar Tarea " + '*' * 40)
-    print('\nMostrando tus tareas...')
-    visualizar_lista(archivo)
-    tarea = input('\nIngrese el nombre de su tarea a completar >> ')
-    print('\n')
+    mostrar_todo()
+    nombre = input('Ingrese nota a eliminar: ')
+    calificacion = input('Ingrese calificacion a eliminar: ')
 
-    csv = pd.read_csv(archivo)
-    try: 
-        csv = csv[csv['Tarea'] != tarea]
-        csv.to_csv(archivo, index=False)
-        os.system('clear')
-        visualizar_lista(archivo)
-    except Exception as e:
-        print(e)
-    
+    valor = (nombre, calificacion)
 
-    
-
-def visualizar_lista(archivo):
-    print('\n'+'*' * 40 + " Visualizar Tarea " + '*' * 40)
-    csv = pd.read_csv(archivo)
-    print(csv)
+    for registro in registro_notas[:]:  # Creating a copy of the list to avoid modifying it while iterating
+        if registro == valor:
+            registro_notas.remove(registro)
 
 def main():
-    archivo = validar_lista()
-    menu(archivo)
+    menu()
 
 
 
